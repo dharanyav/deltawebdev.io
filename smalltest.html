@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  function save()
+ {   // Store
+
+    var text_to_save = document.getElementById('tb1').value;
+    document.getElementById("demo").innerHTML= document.getElementById('tb1').value;
+    localStorage.setItem("text",text_to_save);
+   } // Retrieve
+
+   function add(){
+   var objNewDiv = document.createElement('INPUT');
+ 	objNewDiv.setAttribute('id', 'tb1');
+ 	document.getElementById('content').appendChild(objNewDiv);
+ }
+ function load()
+    {    add();
+    	document.getElementById("tb1").value = localStorage.getItem("text");
+    }
+</script>
+</head>
+<body onload="load()">
+<button onclick="add()">add</button>
+<div id='content'></div>
+<input type="button" value="save" onclick="save()"></input>
+<p type="demo"></p>
+</body>
+</html>

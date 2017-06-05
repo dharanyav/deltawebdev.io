@@ -1,0 +1,135 @@
+<html>
+<head>
+<style>
+body
+{
+  margin:0 auto;
+  padding:0;
+  text-align:center;
+  background-color:#d3d3d3;
+}
+#wrapper
+{
+  width:995px;
+  padding:0px;
+  margin:0px auto;
+  font-family:helvetica;
+  text-align:center;
+}
+.textboxarea
+{
+  width:200px;
+  height:100px;
+  margin-right:2px;
+  border-radius:3px;
+  border:3px solid red;
+  background-color: #ff7f7f;
+  padding:5px;
+}
+select{
+  width:110px;
+  height:35px;
+}
+button
+{
+  background:none;
+  color:white;
+  border:none;
+  width:110px;
+  height:35px;
+  border-radius:3px;
+  background-color:blue;
+  font-size:16px;
+}
+</style>  
+<script>
+
+var intTextBox = 0;
+
+function addElement() {
+intTextBox++;
+    var objNewDiv = document.createElement('div');
+    objNewDiv.setAttribute('id', 'div_' + intTextBox);
+    objNewDiv.innerHTML = '<button onclick="save('+intTextBox+')">save</button><textarea class="textboxarea" id="tb_'+intTextBox+'" name="tb_' + intTextBox + '"></textarea><button onclick="removeElement('+intTextBox+')">remove</button><select id="mySelect_'+intTextBox+'" onchange="priorityFunction('+intTextBox+')"><option value="Veryimportant">Very Important<option value="Important">Important<option value="Notthatimportant">Not that Important</select><br><br><br>';
+    document.getElementById('content').appendChild(objNewDiv);
+    }
+
+function sort()
+{ 
+   for(var i=1;i<intTextBox;i++)
+    {for(var j=1;j<intTextBox;j=k)
+     { 
+
+       while(!(document.getElementById('tb_'+j)))
+         {
+          j++;
+         }
+         var k=j+1;
+        while(!(document.getElementById('tb_'+k)))
+         {
+          k++;
+         }
+         var x = document.getElementById('mySelect_'+j).value;
+      if(x=="Important"||x=="Notthatimportant")
+        {
+      var txb,sel;
+      var txb1=document.getElementById('tb_'+j);
+      var sel1=document.getElementById('mySelect_'+j);
+      var txb2=document.getElementById('tb_'+k);
+      var sel2=document.getElementById('mySelect_'+k);
+      txb=txb2.value;
+      sel=sel2.value;
+      txb2.value=txb1.value;
+      sel2.value=sel1.value;
+      txb1.value=txb;
+      sel1.value=sel;
+      priorityFunction(j);
+      priorityFunction(k);
+       }
+     } 
+    }  
+} 
+
+function save(intTextBox){
+var text_to_save = document.getElementById('tb_'+intTextBox).value;
+localStorage.setItem("text"+intTextBox,text_to_save);
+}
+function load()
+{var i;
+for(i=1;i<=4;i++)
+ document.getElementById("tb_"+i).value=localStorage.getItem("text"+i);
+}
+function priorityFunction(intTextBox) {
+   var x = document.getElementById('mySelect_'+intTextBox).value;
+   if(x=="Veryimportant"){
+   document.getElementById('tb_'+intTextBox).style.backgroundColor = "#ff7f7f";
+   document.getElementById('tb_'+intTextBox).style.border="3px solid red";
+    }
+   if(x=="Important"){
+   document.getElementById('tb_'+intTextBox).style.backgroundColor = "#ffff99";
+   document.getElementById('tb_'+intTextBox).style.border="3px solid yellow";
+   }
+   if(x=="Notthatimportant"){
+   document.getElementById('tb_'+intTextBox).style.backgroundColor = "66b266";
+   document.getElementById('tb_'+intTextBox).style.border="3px solid green";
+   }
+}   
+function removeElement(intTextBox) {
+    if(0 < intTextBox) {
+    document.getElementById('content').removeChild(document.getElementById('div_' + intTextBox));
+        intTextBox--;
+    } else {
+        alert("No textbox to remove");
+    }
+}
+</script>
+</head>
+<body onload="load()">
+<h2>Notes!</h2><br>
+<p>(Click here to add your notes)</p>
+<button onclick="addElement()">Add</button><br><br><br>
+<div id="content"></div>
+<p>(Click here to get the very important notes at the top of your list)</p>
+<button onclick="sort()">Sort</button>
+</body>
+</html>
